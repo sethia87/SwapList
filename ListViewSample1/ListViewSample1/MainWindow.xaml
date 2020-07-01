@@ -1,0 +1,137 @@
+﻿<Window x:Class="ListViewSample1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:ionCtk="http://schemas.iontrading.com/coreToolkit"
+        xmlns:listViewSample1="clr-namespace:ListViewSample1"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ControlTemplate x:Key="SwapListControlTemplate">
+            <Border BorderBrush="SkyBlue" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel LastChildFill="True" Grid.Column="0" >
+                        <TextBlock Margin="5,0,5,0" DockPanel.Dock="Top" Text="Order Types"></TextBlock>
+                        <ListView  Width="150"  IsSynchronizedWithCurrentItem="True"  x:Name="MyListView" Margin="5" ItemsSource="{Binding Path=AvailableOrderTypesList, RelativeSource={RelativeSource TemplatedParent}}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <ei:ChangePropertyAction  PropertyName="SelectedAvailableOrderTypes" Value="{Binding Path=SelectedItems, ElementName=MyListView}" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </i:EventTrigger>
+                                <!--<i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding GotFocusAvailableOrderTypeTriggered}" ></i:InvokeCommandAction>
+                    </i:EventTrigger>-->
+
+                            </i:Interaction.Triggers>
+                        </ListView>
+                    </DockPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+
+                        <Button ToolTip="Move Right" Height="23" Margin="5,70,5,5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="MoveRightCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <ionCtk:IonIcon Width="14" Height="14" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                                    IconLibrary="core.toolkit.Monster" IconKey="arrow-21-icon"  />
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="Move Left" Height="23"  Margin="5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="MoveLeftCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <ionCtk:IonIcon RotateDegrees="180" Width="14" Height="14" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                                    IconLibrary="core.toolkit.Monster" IconKey="arrow-21-icon"  />
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="Move Top" Height="23"  Margin="5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="MoveAllUpCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <ionCtk:IonIcon RotateDegrees="180" Width="14" Height="14" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                                    IconLibrary="core.toolkit.Monster" IconKey="download-icon"  />
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="Move Bottom" Height="23"  Margin="5" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="MoveAllDownCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <ionCtk:IonIcon  Width="14" Height="14" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                                    IconLibrary="core.toolkit.Monster" IconKey="download-icon"  />
+                            </StackPanel>
+                        </Button>
+
+
+                        <Button ToolTip="Move up"  Height="23"  Margin="5" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="MoveUpCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <ionCtk:IonIcon RotateDegrees="270" Width="14" Height="14" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                                    IconLibrary="core.toolkit.Monster" IconKey="arrow-21-icon"  />
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="Move down" Height="23"  Margin="5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="MoveDownCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <ionCtk:IonIcon RotateDegrees="90" Width="14" Height="14" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                                    IconLibrary="core.toolkit.Monster" IconKey="arrow-21-icon"  />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <DockPanel Grid.Column="2" LastChildFill="True">
+                        <TextBlock Margin="5,0,5,0" DockPanel.Dock="Top" Text="Selected Order Types"></TextBlock>
+                        <ListView Width="150"  IsSynchronizedWithCurrentItem="True"   x:Name="SelectedListView"  Margin="5"   ItemsSource="{Binding Path=ShownOrderTypeList, RelativeSource={RelativeSource TemplatedParent}}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction  Command="{Binding Path=SelectedShownOrderTypesCommand,RelativeSource={RelativeSource TemplatedParent}}"
+                                                            CommandParameter="{Binding ElementName=SelectedListView, Path=SelectedItems}"/>
+
+                                    <!--<ei:ChangePropertyAction PropertyName="SelectedShownOrderTypes" Value="{Binding Path=SelectedItems, ElementName=SelectedListView}" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>-->
+                                </i:EventTrigger>
+
+                                <!--<i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding GotFocusShownOrderTypeCommand}" ></i:InvokeCommandAction>
+                    </i:EventTrigger>-->
+                            </i:Interaction.Triggers>
+                        </ListView>
+                    </DockPanel>
+
+                </Grid>
+            </Border>
+        </ControlTemplate>
+    </Window.Resources>
+    
+    <Grid>
+        <listViewSample1:SwapListControl1  Template="{StaticResource SwapListControlTemplate}" ShownOrderTypeList="{Binding ShownOrderTypeList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                           Margin="20,15,0,0" AvailableOrderTypesList="{Binding AvailableOrderTypesList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></listViewSample1:SwapListControl1>
+    </Grid>
+</Window>

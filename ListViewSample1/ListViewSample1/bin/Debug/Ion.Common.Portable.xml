@@ -1,0 +1,1724 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ion.Common.Portable</name>
+    </assembly>
+    <members>
+        <member name="T:Ion.Core.AsyncException">
+            <summary>
+            Exception raised to notify about exception obtained asynchronously
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncException.Is``1(System.Exception)">
+            <summary>
+            Check if an exception is of type T, or an AsyncException that wraps T
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncException.As``1(System.Exception)">
+            <summary>
+            Check if an exception is of type T, or an AsyncException that wraps T
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncException.GetCause(System.Exception)">
+            <summary>
+            Ge the Exception itself, or the inner (recursively) if AsyncException
+            </summary>
+            <param name="exc">The exception to anaylize</param>
+            <returns>The non-AsyncException, or an AsyncException if it is the last exception on the chain. The method
+            never returns null.</returns>
+        </member>
+        <member name="T:Ion.Core.AsyncDelegate">
+            <summary>
+            Specialized version of <see cref="T:System.AsyncCallback"/> for <see cref="T:Ion.Core.AsyncResult`1"/> objects.
+            </summary>
+            <param name="asyncResult">The async root object</param>
+        </member>
+        <member name="T:Ion.Core.AsyncDelegate`1">
+            <summary>
+            Specialized version of <see cref="T:System.AsyncCallback"/> for <see cref="T:Ion.Core.AsyncResult`1"/> objects.
+            </summary>
+            <param name="asyncResult">The async root object</param>
+        </member>
+        <member name="T:Ion.Core.AsyncResult">
+            <summary>
+            Helper to model asynchronous calls (Begin/End pattern through <see cref="T:System.IAsyncResult"/> interface).
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResult.QueueDo">
+            <summary>
+            Enqueue the task as a work item in a separate thread
+            </summary>
+            <returns>The same instance</returns>
+        </member>
+        <member name="M:Ion.Core.AsyncResult.Do">
+            <summary>
+            Synchronously exec the task in the current thread
+            </summary>
+            <returns>The same instance</returns>
+        </member>
+        <member name="M:Ion.Core.AsyncResult.Then(Ion.Core.AsyncDelegate)">
+            <summary>
+            Allow queueing of <see cref="T:Ion.Core.AsyncResult"/> that currently doesn't have any callback set
+            </summary>
+            <param name="callback">The callback to attach to this instance</param>
+            <exception cref="T:System.InvalidOperationException">If the promise already have a callback or it is already completed</exception>
+        </member>
+        <member name="P:Ion.Core.AsyncResult`1.SuspendResult">
+            <summary>
+            When set to true, suspend the result until explicitly set
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResult`1.Completed(`0)">
+            <summary>
+            Notify callbacks that the operation is completed
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResult`1.QueueDo">
+            <summary>
+            Enqueue the task as a work item in a separate thread
+            </summary>
+            <returns>The same instance</returns>
+        </member>
+        <member name="M:Ion.Core.AsyncResult`1.Do">
+            <summary>
+            Synchronously exec the task in the current thread
+            </summary>
+            <returns>The same instance</returns>
+        </member>
+        <member name="M:Ion.Core.AsyncResult`1.Then(Ion.Core.AsyncDelegate{`0})">
+            <summary>
+            Allow queueing of <see cref="T:Ion.Core.AsyncResult`1"/> that currently doesn't have any callback set
+            </summary>
+            <param name="callback">The callback to attach to this instance</param>
+            <exception cref="T:System.InvalidOperationException">If the promise already have a callback or it is already completed</exception>
+        </member>
+        <member name="T:Ion.Core.AsyncResultBase">
+            <summary>
+            Helper to model asynchronous calls (Begin/End pattern through <see cref="T:System.IAsyncResult"/> interface).
+            </summary>
+        </member>
+        <member name="P:Ion.Core.AsyncResultBase.RaiseExceptionOnFinalizer">
+            <summary>
+            Raise exception on finalizer if still not consumed by wait handles and/or handler?
+            </summary>
+            <remarks>By default is true (every exception should be reported in the GUI)</remarks>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.CompletedExc(System.Exception)">
+            <summary>
+            Completed, with exception to raise in the EndXXX call
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.Completed">
+            <summary>
+            Notify callbacks that the operation is completed
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.QueueDo">
+            <summary>
+            Enqueue the task as a work item in a separate thread
+            </summary>
+            <returns>The same instance</returns>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.Do">
+            <summary>
+            Synchronously exec the task in the current thread
+            </summary>
+            <returns>The same instance</returns>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.Abort">
+            <summary>
+            Abort with exception
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.EnableSmartPool">
+            <summary>
+            Enable smart thread pool (disabled by default).
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.DisableSmartPool">
+            <summary>
+            Reset the smart thread pool, that should be previously enabled by <see cref="M:Ion.Core.AsyncResultBase.EnableSmartPool"/>, aborting all threads.
+            </summary>
+        </member>
+        <member name="E:Ion.Core.AsyncResultBase.UnhandledException">
+            <summary>
+            Handle Unhandled exceptions coming from the smart thread pool (if enabled, <see cref="M:Ion.Core.AsyncResultBase.EnableSmartPool"/>)
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.WaitAll(Ion.Core.AsyncResultBase[])">
+            <summary>
+            Wait for all the promises to end
+            </summary>
+            <remarks>
+            This call overcomes the limitation of the <see cref="M:System.Threading.WaitHandle.WaitAll(System.Threading.WaitHandle[])"/> method, that only
+            supports max. 64 handles.
+            </remarks>
+            <param name="asyncResults">The array of promises to wait</param>
+        </member>
+        <member name="M:Ion.Core.AsyncResultBase.Then(System.AsyncCallback,System.Object)">
+            <summary>
+            Allow queueing of <see cref="T:Ion.Core.AsyncResultBase"/> that currently doesn't have any callback set
+            </summary>
+            <exception cref="T:System.InvalidOperationException">If the promise already have a callback</exception>
+        </member>
+        <member name="T:Ion.Core.AttachedProperty`1">
+            <summary>
+            A strongly typed attached property.
+            </summary>
+            <typeparam name="T">The type of the property</typeparam>
+        </member>
+        <member name="F:Ion.Core.AttachedProperty`1._index">
+            <summary>
+            The global index
+            </summary>
+        </member>
+        <member name="F:Ion.Core.AttachedProperty`1._defaultValue">
+            <summary>
+            The default value
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AttachedProperty`1.#ctor">
+            <summary>
+            Register a new attached property of the given type.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AttachedProperty`1.#ctor(`0)">
+            <summary>
+            Register a new attached property of the given type.
+            </summary>
+            <param name="defaultValue">The property default value.</param>
+        </member>
+        <member name="M:Ion.Core.AttachedProperty`1.ExplicitCast``1">
+            <summary>
+            Cast the attached property to another specialized type.
+            </summary>
+        </member>
+        <member name="E:Ion.Core.AttachedProperty`1.ValueChanged">
+            <summary>
+            Event raised when an instance of the attached property changes.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AttachedProperty`1.CreateBinding(Ion.Core.PropertyStore)">
+            <summary>
+            Creates a binding with an instance of the property.
+            </summary>
+            <param name="propertyStore">The store that host the property instance.</param>
+            <returns>A new binding</returns>
+        </member>
+        <member name="P:Ion.Core.AttachedProperty`1.Ion#Core#IAttachedProperty#Index">
+            <summary>
+            The global index
+            </summary>
+        </member>
+        <member name="P:Ion.Core.AttachedProperty`1.Ion#Core#IAttachedProperty#DefaultValue">
+            <summary>
+            The default value
+            </summary>
+        </member>
+        <member name="T:Ion.Core.AttachedPropertyChangedEventArgs">
+            <summary>
+            Arguments for the <see cref="E:Ion.Core.PropertyStore.AttachedPropertyChanged"/> event
+            </summary>
+        </member>
+        <member name="M:Ion.Core.AttachedPropertyRegistry.Find(System.Type)">
+            <summary>
+            Return all registered attached properties of the specified type (exact, no inheritance)
+            </summary>
+        </member>
+        <member name="T:Ion.Core.AlphaAttribute">
+            <summary>
+            <para>Identifies an object in an alpha development state.</para>
+            <para>Such an object should not be used for production purpose</para>
+            <para>because its implementation could be incomplete and/or its</para>
+            <para>interface could completely change in future releases.</para>
+            </summary>
+        </member>
+        <member name="T:Ion.Core.BetaAttribute">
+            <summary>
+            <para>Identifies an object in a beta development state.</para>
+            <para>Such an object should preferably not be used for production purpose</para>
+            <para>because its implementation could still contain major issues.</para>
+            <para>The interface of the object should be pretty stable even if very minor</para>
+            <para>tweeks could still be necessary.</para>
+            </summary>
+        </member>
+        <member name="T:Ion.Core.DevelopmentStepAttribute">
+            <summary>
+            Identifies a development step in an object or interface development
+            </summary>
+        </member>
+        <member name="P:Ion.Core.DevelopmentStepAttribute.Comment">
+            <summary>
+            Whatever comment on this object status
+            </summary>
+        </member>
+        <member name="P:Ion.Core.DevelopmentStepAttribute.Version">
+            <summary>
+            Component current version
+            </summary>
+        </member>
+        <member name="P:Ion.Core.DevelopmentStepAttribute.Author">
+            <summary>
+            The author of the class
+            </summary>
+        </member>
+        <member name="T:Ion.Core.ProductionAttribute">
+            <summary>
+            <para>Identifies an object in a production development state.</para>
+            <para>A production object has already gone through one or more QA session</para>
+            <para>so to provide a production quality.</para>
+            <para>The interface of a produciton object is expected to be stable, even</para>
+            <para>if it can be extended with non-breaking new features in future release.</para>
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Collections.CollectionChangedAction">
+            <summary>
+            Enum the type of changed events
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Collections.CollectionChangedAction.Added">
+            <summary>
+            An item is added
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Collections.CollectionChangedAction.Removed">
+            <summary>
+            An item is removed
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Collections.CollectionChangedAction.Replaced">
+            <summary>
+            An item is changed
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Collections.CollectionChangedAction.Reset">
+            <summary>
+            The content of the collection is changed dramatically
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Collections.ICollectionChangedEventArgs`1">
+            <summary>
+            Arguments for <see cref="E:Ion.Core.Collections.INotifyCollectionChanged`1.Changed"/> event
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Collections.ICollectionChangedEventArgs`1.Item">
+            <summary>
+            The add/removed item
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Collections.ICollectionChangedEventArgs`1.Action">
+            <summary>
+            The changed action type
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Collections.ICollectionChangedEventArgs`1.Index">
+            <summary>
+            The index where the item is added/removed
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Collections.CollectionChangedEventArgs`1">
+            <summary>
+            Arguments for <see cref="E:Ion.Core.Collections.INotifyCollectionChanged`1.Changed"/> event
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Collections.CollectionChangedEventArgs`1.Item">
+            <summary>
+            The add/removed item
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Collections.CollectionChangedEventArgs`1.Action">
+            <summary>
+            The changed action type
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Collections.CollectionChangedEventArgs`1.Index">
+            <summary>
+            The index where the item is added/removed
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Collections.INotifyCollectionChanged`1">
+            <summary>
+            Observable collection that raise event when the content changes
+            </summary>
+        </member>
+        <member name="E:Ion.Core.Collections.INotifyCollectionChanged`1.Changed">
+            <summary>
+            Raised when a collection item is added, removed or changed
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Compression.GZipStream">
+            <summary>
+            Provides methods and properties used to compress and decompress streams.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Compression.GZipStream.CreateDecompress(System.IO.Stream,System.Boolean)">
+            <summary>
+            Decompresses the underlying stream.
+            </summary>
+            <remarks>
+            By default, GZipStream owns the underlying stream, so closing the stream parameter also closes the 
+            underlying stream. Note that the state of the underlying stream can affect the usability of the stream. 
+            Also, no explicit checks are performed, so no additional exceptions are thrown when the new instance is created.
+            </remarks>
+            <param name="stream">The stream to decompress</param>
+            <param name="leaveOpen">true to leave the stream object open after disposing the GZipStream object; otherwise, false.</param>
+        </member>
+        <member name="T:Ion.Core.Exceptions.ExceptionInfo">
+            <summary>
+            Wraps the information related to an exception argument
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.ExceptionInfo.ExceptionName">
+            <summary>
+            Exception name
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.ExceptionInfo.ExceptionType">
+            <summary>
+            Full exception type
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.ExceptionInfo.Message">
+            <summary>
+            Exception message
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.ExceptionInfo.StackTrace">
+            <summary>
+            Stack trace (if available)
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.ExceptionInfo.Level">
+            <summary>
+            Depth of this exception (in case of nested exceptions)
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.ExceptionInfo.BuildInfoError">
+            <summary>
+            If not null, the error message we got when building this descriptor
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Exceptions.UnhandledExceptionEventArgs.Exception">
+            <summary>
+            The exception to analyze
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Exceptions.ExceptionHelper">
+            <summary>
+            Singleton class that helps to manage and raise exceptions.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Exceptions.ExceptionHelper.LogException(Ion.Core.Logging.ILogger,System.Exception,System.String)">
+            <summary>
+            Log a caught exceptions on the logs.
+            </summary>
+            <remarks>
+            The whole exception message, stack and inner exceptions will be logged as well with a standard format.
+            </remarks>
+            <param name="logger">The target logger</param>
+            <param name="exception">The exception to trace</param>
+            <param name="action">The context (action) to log as well to document the exception or to help to trace back where
+            the exception was logged.</param>
+        </member>
+        <member name="M:Ion.Core.Exceptions.ExceptionHelper.LogException(Ion.Core.Logging.ILogger,System.Collections.Generic.List{Ion.Core.Exceptions.ExceptionInfo},System.String)">
+            <summary>
+            Writes a list of ExceptionInfo to the log
+            </summary>
+            <param name="logger">The target logger</param>
+            <param name="infoItems">The list of info to trace</param>
+            <param name="traceKey">The trace key</param>
+        </member>
+        <member name="M:Ion.Core.Exceptions.ExceptionHelper.GetFullExceptionDescription(System.Exception,System.Text.StringBuilder)">
+            <summary>
+            Generates a full stack trace for an exception, including all inner exceptions.
+            Also includes all types and messages from exceptions.
+            </summary>
+            <param name="exception">The excpetion to analyze</param>
+            <param name="sb">The string builder used to return the full description</param>
+            <remarks>Recursive call</remarks>
+        </member>
+        <member name="M:Ion.Core.Exceptions.ExceptionHelper.GetExceptionInfo(System.Exception)">
+            <summary>
+            Analyzes an exception and extract relevant information for each level of the exception
+            </summary>
+            <param name="exception">The exception</param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Exceptions.ExceptionHelper.RaiseException(System.Exception)">
+            <summary>
+            Raise exception to show it on screen as "Unhandled".
+            </summary>
+            <param name="exception">The exception to raise</param>
+        </member>
+        <member name="E:Ion.Core.Exceptions.ExceptionHelper.UnhandledException">
+            <summary>
+            Try to manages unhandled exceptions in order to reduce exceptions.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Expression.IPropertyCollection">
+            <summary>
+            A collection of valued properties used for substitution
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Expression.IPropertyCollection.Properties">
+            <summary>
+            Retrieve the property table
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Expression.Parser">
+            <summary>
+            An expression Parser.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Expression.Parser.UseOldSyntax">
+            <summary>
+            Allow to read $XX$ old syntax (default: false)
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Expression.Parser.Functions">
+            <summary>
+            Get the functions dictionary definitions
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Expression.Parser.ParserErrorBehavior">
+            <summary>
+            Get/set the behavior in case of expression errors
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Expression.Parser.StringComparisonType">
+            <summary>
+            Change the behavior of '==' and '!=' operators for strings
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Expression.Parser.EmptyPropertyCollection.Properties">
+            <summary>
+            Retrieve the property table
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Expression.Parser.ProcessString(System.String,Ion.Core.Expression.IPropertyCollection)">
+            <summary>
+            Process a generic string that can contains expression tokens $()
+            </summary>
+            <param name="content">The string to process</param>
+            <param name="properties">The property table</param>
+            <returns>The processed string</returns>
+        </member>
+        <member name="M:Ion.Core.Expression.Parser.ContainsFormulas(System.String)">
+            <summary>
+            Check if the string contains any formula syntax
+            </summary>
+            <remarks>
+            The <see cref="P:Ion.Core.Expression.Parser.UseOldSyntax"/> should be set to the requested level of syntax before this call.
+            </remarks>
+            <param name="content">The string to check</param>
+            <returns>True if the string contains any valid formula to parse.</returns>
+        </member>
+        <member name="M:Ion.Core.Expression.Parser.ProcessExpression(System.String,Ion.Core.Expression.IPropertyCollection)">
+            <summary>
+            Process an expression (e.g. the content of a $() string).
+            </summary>
+            <param name="content">The expression to parse</param>
+            <param name="properties">The property table</param>
+            <returns>The typed expression result</returns>
+        </member>
+        <member name="F:Ion.Core.Expression.ParserErrorBehavior.None">
+            <summary>
+            None will leave expressions if not understanded
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Expression.ParserException">
+            <summary>
+            An exception due to expression/data error
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Globalization.GlobalizationHelper">
+            <summary>
+            provides the global current info used as CurrentCulture for the threds created by the SDK ThreadPoolFactory
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.Instance">
+            <summary>
+            the singleton instance
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationHelper.ValidateDatePattern(System.String)">
+            <summary>
+            validate the sanity of the given format, returning FALSE in case it is not good
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationHelper.Update">
+            <summary>
+            //refresh all threads and raise changed events
+            </summary>
+        </member>
+        <member name="E:Ion.Core.Globalization.GlobalizationHelper.Changed">
+            <summary>
+            notify that the current cultureinfo has changed
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.ShortDatePattern">
+            <summary>
+            get/set the short date pattern used by the current CultureInfo - set to null to restore the default
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.ShortTimePattern">
+            <summary>
+            get/set the short time pattern used by the current CultureInfo - set to null to restore the default
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.LongDatePattern">
+            <summary>
+            get/set the long date pattern used by the current CultureInfo - set to null to restore the default
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.LongTimePattern">
+            <summary>
+            get/set the long time pattern used by the current CultureInfo - set to null to restore the default
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.DefaultShortTimePattern">
+            <summary>
+            return the default short time pattern for the current culture
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.DefaultShortDatePattern">
+            <summary>
+            return the default short date pattern for the current culture
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.DefaultLongTimePattern">
+            <summary>
+            return the default long time pattern for the current culture
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.DefaultLongDatePattern">
+            <summary>
+            return the default long date pattern for the current culture
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.DefaultCultureInfo">
+            <summary>
+            return the default current coming from OS settings
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Globalization.GlobalizationHelper.CultureInfo">
+            <summary>
+            get/set the current culture info - set to null to restore the default
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationHelper.UpdateDefaultDatePattern">
+            <summary>
+            get the default short date pattern for the given culture
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationHelper.SetDatePatterns(System.String,System.String)">
+            <summary>
+            set the short and long pattern for the current culture and send only one changed event
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationHelper.SetTimePatterns(System.String,System.String)">
+            <summary>
+            set the short and long pattern for the current culture and send only one changed event
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationHelper.SetPatterns(System.String,System.String,System.String,System.String)">
+            <summary>
+            set the short and long pattern for the current culture and send only one changed event
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Globalization.GlobalizationExtensions">
+            <summary>
+            Repository for supported cultures/predefined formats, due to Silverlight missing predefined schemas
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationExtensions.GetCultureNames">
+            <summary>
+            Get all supported culture names (in the en-US form)
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationExtensions.GetAllDateTimePatterns(System.Globalization.CultureInfo)">
+            <summary>
+            the supported culture names for a given culture
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Globalization.GlobalizationExtensions.GetAllTimePatterns(System.Globalization.CultureInfo)">
+            <summary>
+            the supported culture names for a given culture
+            </summary>
+        </member>
+        <member name="T:Ion.Core.IAttachedBinding`1">
+            <summary>
+            A binding with an instance of an attached property instance.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Ion.Core.IAttachedBinding`1.Owner">
+            <summary>
+            Get the owner of the property instance
+            </summary>
+        </member>
+        <member name="P:Ion.Core.IAttachedBinding`1.Property">
+            <summary>
+            Get the definition of the attached property
+            </summary>
+        </member>
+        <member name="E:Ion.Core.IAttachedBinding`1.Changed">
+            <summary>
+            Event raised when the instance of the attached property changes.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.IAttachedProperty">
+            <summary>
+            Base untyped interface for attached property
+            </summary>
+        </member>
+        <member name="P:Ion.Core.IAttachedProperty.PropertyType">
+            <summary>
+            Get the type of the property
+            </summary>
+        </member>
+        <member name="P:Ion.Core.IAttachedProperty.Index">
+            <summary>
+            Index within the global store
+            </summary>
+        </member>
+        <member name="P:Ion.Core.IAttachedProperty.DefaultValue">
+            <summary>
+            The default value
+            </summary>
+        </member>
+        <member name="M:Ion.Core.IAttachedProperty.RaiseValueChanged(System.Object,Ion.Core.PropertyStore)">
+            <summary>
+            Raise typed property changed event
+            </summary>
+        </member>
+        <member name="T:Ion.Core.IO.Path">
+            <summary>
+            Imported from MONO sources
+            </summary>
+        </member>
+        <member name="T:Ion.Core.IPropertyStore">
+            <summary>
+            Defines an object that is able to store <see cref="T:Ion.Core.IAttachedProperty"/> instances.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.IPropertyStore.GetValue``1(Ion.Core.AttachedProperty{``0})">
+            <summary>
+            Get the attached property value
+            </summary>
+            <typeparam name="T">The type of the property</typeparam>
+            <param name="handle">The attached property descriptor</param>
+            <returns>The value of the property</returns>
+        </member>
+        <member name="M:Ion.Core.IPropertyStore.SetValue``1(Ion.Core.AttachedProperty{``0},``0)">
+            <summary>
+            Set the attached property value
+            </summary>
+            <typeparam name="T">The type of the property</typeparam>
+            <param name="handle">The attached property descriptor</param>
+            <param name="value">The new property value</param>
+        </member>
+        <member name="E:Ion.Core.IPropertyStore.AttachedPropertyChanged">
+            <summary>
+            Event raised when an attached property value changes
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.Category">
+            <summary>
+            Provides Default Value of Category for Audit Server Traces
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.Entity">
+            <summary>
+            Provides Default Value of Entity for Audit Server Traces
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.LoggerSource">
+            <summary>
+            Provides Unique Name for the identification of traces.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.EntityId">
+            <summary>
+            Provides Default Value of EntityId for Audit Server Traces
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.Result">
+            <summary>
+            Provides Default Value of Result for Audit Server Traces
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.Action">
+            <summary>
+            Provides Default Value of Action for Audit Server Traces
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.AuditLogger.AuditLogSettings.AuditServiceFactory">
+            <summary>
+            Instance of AuditServiceFactory to create IAuditService which pushes data to Audit Server
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.T(System.String,System.Object)">
+            <summary>
+            Adds a new generic token to the logged trace.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.Flush">
+            <summary>
+            Logs the built trace to Audit Server and to Log Files
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.Category(System.Object)">
+            <summary>
+            Set Category for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.Entity(System.Object)">
+            <summary>
+            Set Entity for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.EntityId(System.Object)">
+            <summary>
+            Set EntityId for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.Action(System.Object)">
+            <summary>
+            Set Action for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.Result(System.Object)">
+            <summary>
+            Set Result for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.TransactionId(System.Object)">
+            <summary>
+            Set TransactionId for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditLogger.Description(System.Object)">
+            <summary>
+            Set Description for Audit Server Logging
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ion.Core.Logging.AuditLogger.IAuditService.SendDataToAuditServer(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double)">
+            <summary>
+            Send Message to Audit Server
+            </summary>
+            <param name="category"></param>
+            <param name="entity"></param>
+            <param name="entityId"></param>
+            <param name="action"></param>
+            <param name="result"></param>
+            <param name="transactionId"></param>
+            <param name="description"></param>
+            <param name="newValues"></param>
+            <param name="oldValues"></param>
+            <param name="eventTimeStamp"></param>
+        </member>
+        <member name="T:Ion.Core.Logging.ILogger">
+            <summary>
+            Base interface for a Logger class.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.WillTrace">
+            <summary>
+            Returns true if logging at the current <see cref="P:Ion.Core.Logging.ILogger.LogLevel"/> and 
+            <see cref="P:Ion.Core.Logging.ILogger.LogCategory"/> will succeed.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.WillTrace(Ion.Core.Logging.LogLevel,Ion.Core.Logging.LogCategory)">
+            <summary>
+            Returns true if logging at the specified <see cref="P:Ion.Core.Logging.ILogger.LogLevel"/> and 
+            <see cref="P:Ion.Core.Logging.ILogger.LogCategory"/> will succeed.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.WillTrace(Ion.Core.Logging.LogLevel)">
+            <summary>
+            Returns true if logging at the specified <see cref="P:Ion.Core.Logging.ILogger.LogLevel"/> and 
+            the current <see cref="P:Ion.Core.Logging.ILogger.LogCategory"/> will succeed.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.WillTrace(Ion.Core.Logging.LogCategory)">
+            <summary>
+            Returns true if logging at the specified <see cref="P:Ion.Core.Logging.ILogger.LogCategory"/> and 
+            the current <see cref="P:Ion.Core.Logging.ILogger.LogLevel"/> will succeed.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.ILogger.Prefix">
+            <summary>
+            Optional. If specified, the delegate will be invoked before the first token.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.ILogger.Postfix">
+            <summary>
+            Optional. If specified, the delegate will be invoked after the laste token (just before Write).
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.ILogger.LogLevel">
+            <summary>
+            The default log level. Defaults defined in the <see cref="T:Ion.Core.Logging.ILogger"/> implementation.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.ILogger.LogCategory">
+            <summary>
+            The default log category. Defaults defined in the <see cref="T:Ion.Core.Logging.ILogger"/> implementation.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.ILogger.LogKey">
+            <summary>
+            The default log key. Defaults defined in the <see cref="T:Ion.Core.Logging.ILogger"/> implementation.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Info">
+            <summary>
+            Sets the current log category to <see cref="F:Ion.Core.Logging.LogCategory.Info"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Warning">
+            <summary>
+            Sets the current log category to <see cref="F:Ion.Core.Logging.LogCategory.Warning"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Error">
+            <summary>
+            Sets the current log category to <see cref="F:Ion.Core.Logging.LogCategory.Error"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Low">
+            <summary>
+            Sets the current log level to <see cref="F:Ion.Core.Logging.LogLevel.Low"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Medium">
+            <summary>
+            Sets the current log level to <see cref="F:Ion.Core.Logging.LogLevel.Medium"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.High">
+            <summary>
+            Sets the current log level to <see cref="F:Ion.Core.Logging.LogLevel.High"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Category(Ion.Core.Logging.LogCategory)">
+            <summary>
+            Sets the current log category to the specified category. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Level(Ion.Core.Logging.LogLevel)">
+            <summary>
+            Sets the current log level to the specified <see cref="P:Ion.Core.Logging.ILogger.LogLevel"/>. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Key(System.String)">
+            <summary>
+            Set the key of the current log trace.
+            </summary>
+            <param name="key">The trace's key (first token)</param>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Token(System.String,System.Object)">
+            <summary>
+            Adds a new generic token to the logged trace. OBSOLETE, use <see cref="M:Ion.Core.Logging.ILogger.T(System.String,System.Object)"/> instead.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.T(System.String,System.Object)">
+            <summary>
+            Adds a new generic token to the logged trace.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.Flush">
+            <summary>
+            Logs the built trace. It also resets the log level and keys to their default values.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.ILogger.LogProducerName">
+            <summary>
+            Get/set the log producer for the instance. The default should be null (none defined).
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.ILogger.ProducerName(System.String)">
+            <summary>
+            Sets the current log producer to the specified value. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="T:Ion.Core.Logging.LogCategory">
+            <summary>
+            Expandable category list
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogCategory.Info">
+            <summary>
+            Publicly visible Info message
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogCategory.Warning">
+            <summary>
+            Publicly visible Warning message
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogCategory.Error">
+            <summary>
+            Publicly visible Error message
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Logging.LoggerCreateEventArgs">
+            <summary>
+            Parameters for the <see cref="E:Ion.Core.Logging.LoggerFactory.LoggerCreate"/> event
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.LoggerCreateEventArgs.Source">
+            <summary>
+            Get the source object of logger
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.LoggerCreateEventArgs.SourceType">
+            <summary>
+            Get the source object type of logger
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.LoggerCreateEventArgs.Logger">
+            <summary>
+            Get/set (returns) the created logger
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.LoggerCreateEventArgs.CustomName">
+            <summary>
+            Get the custom name provided by the logger owner
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.LoggerCreateEventArgs.LoggerSourceAttr">
+            <summary>
+            Get the attribute that regulates the custom naming of the logger instance
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Logging.LoggerFactory">
+            <summary>
+            Factory to create new logger instances
+            </summary> 
+        </member>
+        <member name="E:Ion.Core.Logging.LoggerFactory.LoggerCreate">
+            <summary>
+            Event raised for each new log line (for subscriber use only)
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.LoggerFactory.Create(System.Object)">
+            <summary>
+            Create a new logger instance
+            </summary>
+            <param name="source">The instance that owns the logger.</param>
+            <returns>The newly create logger</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.LoggerFactory.Create``1">
+            <summary>
+            Create a new logger instance
+            </summary>
+            <typeparam name="TSource">The type of the owner of the logger</typeparam>
+            <remarks>
+            If one static property/field of the type specified is decorated with the 
+            <see cref="T:Ion.Core.Logging.LoggerSourceAttribute"/>, then this accessor is used to override the logger name.
+            </remarks>
+            <returns>The newly create logger</returns>
+        </member>
+        <member name="M:Ion.Core.Logging.LoggerFactory.Create``1(System.String)">
+            <summary>
+            Create a new logger instance
+            </summary>
+            <typeparam name="TSource">The type of the owner of the logger</typeparam>
+            <param name="loggerSource">The source name of the logger</param>
+            <remarks>
+            If one static property/field of the type specified is decorated with the 
+            <see cref="T:Ion.Core.Logging.LoggerSourceAttribute"/>, the property will be ignored.
+            </remarks>
+            <returns>The newly create logger</returns>
+        </member>
+        <member name="T:Ion.Core.Logging.LoggerFactory.NameRetriever`1">
+            <summary>
+            Optimize reflection access, one per type
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Logging.LoggerSourceAttribute">
+            <summary>
+            Declare this attribute on static/non static fields or properties that 
+            returns a string used to determine the logger source name
+            </summary>
+            <remarks>
+            The property/field will be asked for the name of the logger instance
+            </remarks>
+        </member>
+        <member name="F:Ion.Core.Logging.LoggerSourceAttribute.UseNamespace">
+            <summary>
+            Get/set the flag that regulates the namespace prefix generation
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Logging.LogLevel">
+            <summary>
+            The log level. Low is used for 'important' line that should aways be traced. High is used
+            for max verbosity lines.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogLevel.Default">
+            <summary>
+            Used to inherit level from other layers
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogLevel.Low">
+            <summary>
+            Standard, Application level low info logged
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogLevel.Medium">
+            <summary>
+            Medium verbosity
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Logging.LogLevel.High">
+            <summary>
+            Debug, Max verbosity
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Logging.NullLogger">
+            <summary>
+            null logger
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Logging.NullLogger.LogProducerName">
+            <summary>
+            Get/set the log producer for the instance. The default should be null (none defined).
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Logging.NullLogger.ProducerName(System.String)">
+            <summary>
+            Sets the current log producer to the specified value. 
+            This value is reset to default after the call to <see cref="M:Ion.Core.Logging.ILogger.Flush"/>.
+            </summary>
+            <returns>The logger itself</returns>
+        </member>
+        <member name="T:Ion.Core.Perf.PerformanceTimer">
+            <summary>
+            High resolution timer class that traces named events in the logs.
+            </summary>
+            <remarks>
+            Use performance timers to create named sections in the log files to trace START/STOP sections, with
+            support of intermediate steps.
+            </remarks>
+        </member>
+        <member name="F:Ion.Core.Perf.PerformanceTimer.LogProducerKey">
+            <summary>
+            The log producer key
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Perf.PerformanceTimer.#ctor(System.String,Ion.Core.Logging.LogLevel,System.String)">
+            <summary>
+            Build the timer, immediately taking the start time
+            </summary>
+            <param name="taskName">The counter name</param>
+            <param name="level">The log level at which the log traces will be produced</param>
+            <param name="logProducerName">The log producer name of which the level will be used to log</param>
+        </member>
+        <member name="M:Ion.Core.Perf.PerformanceTimer.Dispose">
+            <summary>
+            Dispose the instance and stop the timer (trace the stop line)
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Perf.PerformanceTimer.IsDisposed">
+            <summary>
+            Is the instance disposed?
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Perf.PerformanceTimer.Split(System.String,Ion.Core.Logging.LogLevel)">
+            <summary>
+            Add and log and intermediate step (split time)
+            </summary>
+            <param name="stepName">The name of the step</param>
+            <param name="logLevel">Override the standard log level, or default</param>
+        </member>
+        <member name="M:Ion.Core.Perf.PerformanceTimer.AddPar(System.String,System.Object)">
+            <summary>
+            Add an additional custom par for all log lines (Split and Stop). Warning: performance drop.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Perf.PerformanceTimer.Now">
+            <summary>
+            To use with <see cref="M:Ion.Core.Perf.PerformanceTimer.TraceIfLonger(System.String,Ion.Core.Perf.SectionProfiler.Tick,System.TimeSpan)"/> methods.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Perf.PerformanceTimer.TraceIfLonger(System.String,Ion.Core.Perf.SectionProfiler.Tick,System.TimeSpan)">
+            <summary>
+            Create a PerformanceTimer trace (only end) only if elapsed time is greater than a threashold
+            </summary>
+            <param name="taskName">The counter name</param>
+            <param name="startTick">The start number of ticks obtained with the <see cref="P:Ion.Core.Perf.PerformanceTimer.Now"/> property</param>
+            <param name="maxInterval">The minimum internal to enable the log trace</param>
+        </member>
+        <member name="M:Ion.Core.Perf.PerformanceTimer.TraceIfLonger(System.String,Ion.Core.Perf.SectionProfiler.Tick,System.TimeSpan,System.Action{Ion.Core.Perf.PerformanceTimer})">
+            <summary>
+            Create a PerformanceTimer trace (only end) only if elapsed time is greater than a threashold
+            </summary>
+            <param name="taskName">The counter name</param>
+            <param name="startTick">The start number of ticks obtained with the <see cref="P:Ion.Core.Perf.PerformanceTimer.Now"/> property</param>
+            <param name="maxInterval">The minimum internal to enable the log trace</param>
+            <param name="handler">An handler called if the log trace is created</param>
+        </member>
+        <member name="T:Ion.Core.Perf.SectionProfiler">
+            <summary>
+            High-performance timers and statistics based on CPU's rdtsc (on desktop platform)
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Perf.SectionProfiler.Enter">
+            <summary>
+            Called when entering a performance counted section
+            </summary>
+            <exception cref="T:System.InvalidOperationException">When using nested profiling.</exception>
+        </member>
+        <member name="T:Ion.Core.Perf.SectionProfiler.Tick">
+            <summary>
+            Opaque implementation-independent representation of the smallest time period measureable.
+            </summary>
+            <remarks>
+            On WPF/Desktop/Win this is the RDTSC reading. On Silverlight this should follow the base Windows timer resolution (~13 ms).
+            </remarks>
+        </member>
+        <member name="M:Ion.Core.Perf.SectionProfiler.Exit">
+            <summary>
+            Called when exiting a performance counted section
+            </summary>
+            <returns>The elapsed RDTSC tick between the Enter call, or 0 if no Enter was called</returns>
+        </member>
+        <member name="M:Ion.Core.Perf.SectionProfiler.Reset">
+            <summary>
+            Reset the counter
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Perf.SectionProfiler.Ticks">
+            <summary>
+            Get the cumulated time in ticks
+            </summary>
+            <exception cref="T:System.InvalidOperationException">When a profiling is current in progress.</exception>
+        </member>
+        <member name="P:Ion.Core.Perf.SectionProfiler.Time">
+            <summary>
+            Get the cumulated time
+            </summary>
+            <exception cref="T:System.InvalidOperationException">When a profiling is current in progress.</exception>
+        </member>
+        <member name="M:Ion.Core.Perf.SectionProfiler.ToTime(Ion.Core.Perf.SectionProfiler.Tick)">
+            <summary>
+            Convert ticks in elapsed time
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Perf.SectionProfiler.Now">
+            <summary>
+            Get the 'now' time in ticks
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Perf.SectionProfiler.Count">
+            <summary>
+            Get the number of measurement taken
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Perf.SectionProfiler.IsProfiling">
+            <summary>
+            Check if profiling is in progress (Enter was executed)
+            </summary>
+        </member>
+        <member name="T:Ion.Core.PropertyStore">
+            <summary>
+            Internal property store for objects that supports attached properties
+            </summary>
+        </member>
+        <member name="M:Ion.Core.PropertyStore.GetValue``1(Ion.Core.AttachedProperty{``0})">
+            <summary>
+            Get the attached property value
+            </summary>
+            <typeparam name="T">The type of the property</typeparam>
+            <param name="handle">The attached property descriptor</param>
+            <returns>The value of the property</returns>
+        </member>
+        <member name="M:Ion.Core.PropertyStore.SetValue``1(Ion.Core.AttachedProperty{``0},``0)">
+            <summary>
+            Set the attached property value
+            </summary>
+            <typeparam name="T">The type of the property</typeparam>
+            <param name="handle">The attached property descriptor</param>
+            <param name="value">The new property value</param>
+        </member>
+        <member name="E:Ion.Core.PropertyStore.AttachedPropertyChanged">
+            <summary>
+            Event raised when an attached property value changes
+            </summary>
+        </member>
+        <member name="M:Ion.Core.PropertyStore.GetProperties">
+            <summary>
+            Enumerates all populated attached properties
+            </summary>
+        </member>
+        <member name="T:Ion.Core.PropertyValueChangedEventArgs`1">
+            <summary>
+            Arguments for the <see cref="E:Ion.Core.AttachedProperty`1.ValueChanged"/> event
+            </summary>
+        </member>
+        <member name="P:Ion.Core.PropertyValueChangedEventArgs`1.NewValue">
+            <summary>
+            Get the new property value
+            </summary>
+        </member>
+        <member name="P:Ion.Core.PropertyValueChangedEventArgs`1.Owner">
+            <summary>
+            Get the owner of the property instance
+            </summary>
+        </member>
+        <member name="T:Ion.Core.ResettableAttribute">
+            <summary>
+            Temporarly used to reset ION.WEB SDK accessories
+            </summary>
+        </member>
+        <member name="T:Ion.Core.ResetHelper">
+            <summary>
+            Temporarly used to reset ION.WEB SDK accessories
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Threading.DefaultThreadPool">
+            <summary>
+            Should not be used
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Threading.DefaultThreadPool.QueueWorkItem(System.Action)">
+            <summary>
+            Enqueue a plain action.
+            </summary>
+            <param name="action">The action to add.</param>
+        </member>
+        <member name="P:Ion.Core.Threading.DefaultThreadPool.Threads">
+            <summary>
+            Get the current thread count
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Threading.IThreadPool.QueueWorkItem(System.Action)">
+            <summary>
+            Enqueue a plain action.
+            </summary>
+            <param name="action">The action to add.</param>
+        </member>
+        <member name="P:Ion.Core.Threading.IThreadPool.Threads">
+            <summary>
+            Get the current threads
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Threading.IThreadPool.Init(System.String,System.Int32,System.Int32)">
+            <summary>
+            Init the thread pool
+            </summary>
+            <param name="threadPatternName">The pattern name for threads, using the <see cref="M:System.String.Format(System.String,System.Object[])"/> format</param>
+            <param name="minThreadCount">Min thread count, or -1 for default</param>
+            <param name="maxThreadCount">Max thread count, or -1 for default</param>
+        </member>
+        <member name="T:Ion.Core.Threading.ThreadPoolFactory">
+            <summary>
+            Creates a thread pool and register default implementation
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Threading.ThreadPoolFactory.MainThread">
+            <summary>
+            Get the main thread (!= null if at least one thread pool was created)
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Threading.ThreadPoolFactory.ThreadPools">
+            <summary>
+            Get the set of existing thread pools
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Threading.ThreadPoolFactory.Create(System.String,System.Int32,System.Int32)">
+            <summary>
+            Create a new thread pool using a pattern name for new threads
+            </summary>
+            <remarks>
+            Assume that the caller is the main thread (e.g. UI)
+            </remarks>
+            <param name="threadPatternName">The name of the thread, it will postponed with the thread number</param>
+            <param name="minThreadCount">The minimum thread count, or -1 for default</param>
+            <param name="maxThreadCount">The maximum count of threads, or -1 for default.</param>
+        </member>
+        <member name="T:Ion.Core.Data_Silverlight">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Data_Silverlight.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Data_Silverlight.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Data_Silverlight.datepatterns">
+             <summary>
+               Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
+            &lt;CultureInfos xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+              &lt;culture name=&quot;ar-SA&quot;&gt;
+                &lt;pat&gt;dd/MM/yy&lt;/pat&gt;
+                &lt;pat&gt;dd/MM/yyyy&lt;/pat&gt;
+                &lt;pat&gt;dd/MMMM/yyyy&lt;/pat&gt;
+                &lt;pat&gt;dddd, dd MMMM, yyyy&lt;/pat&gt;
+                &lt;pat&gt;dd MMMM&lt;/pat&gt;
+                &lt;pat&gt;MMMM, yyyy&lt;/pat&gt;
+              &lt;/culture&gt;
+              &lt;culture name=&quot;bg-BG&quot;&gt;
+                &lt;pat&gt;d.M.yyyy &apos;г.&apos;&lt;/pat&gt;
+                &lt;pat&gt;dd.M.yyyy &apos;г.&apos;&lt;/pat&gt;
+                &lt;pat&gt;d.MM.yyyy &apos;г.&apos;&lt;/pat&gt;
+                &lt;pat&gt;dd.MM.yyyy &apos;г.&apos;&lt;/pat&gt; [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:Ion.Core.Data_Silverlight.timepatterns">
+             <summary>
+               Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+            &lt;CultureInfos xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+              &lt;culture name=&quot;ar-SA&quot;&gt;
+                &lt;pat&gt;hh:mm tt&lt;/pat&gt;
+                &lt;pat&gt;HH:mm&lt;/pat&gt;
+                &lt;pat&gt;hh:mm:ss tt&lt;/pat&gt;
+                &lt;pat&gt;HH:mm:ss&lt;/pat&gt;
+              &lt;/culture&gt;
+              &lt;culture name=&quot;bg-BG&quot;&gt;
+                &lt;pat&gt;HH:mm &apos;ч.&apos;&lt;/pat&gt;
+                &lt;pat&gt;H:mm &apos;ч.&apos;&lt;/pat&gt;
+                &lt;pat&gt;HH:mm:ss &apos;ч.&apos;&lt;/pat&gt;
+                &lt;pat&gt;H:mm:ss &apos;ч.&apos;&lt;/pat&gt;
+              &lt;/culture&gt;
+              &lt;culture name=&quot;ca-ES&quot;&gt;
+                &lt;pat&gt;HH:mm&lt;/pat&gt;
+                &lt;pat&gt;H:mm&lt;/pa [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="T:Ion.Core.CommonMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_BracketFunMatch">
+            <summary>
+              Looks up a localized string similar to Missing matching &apos;(&apos; character in function call parameter list: {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_BracketsMatch">
+            <summary>
+              Looks up a localized string similar to Missing matching &apos;(&apos; character in expression: {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.Exc_DuplicateLogAttr">
+            <summary>
+              Looks up a localized string similar to Multiple LoggerSourceAttribute attributes defined on type {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.Exc_InvalidVer">
+            <summary>
+              Looks up a localized string similar to Not a IonVersion object.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.Exc_InvalidVerCod">
+            <summary>
+              Looks up a localized string similar to Invalid codification.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_MissingFunc">
+            <summary>
+              Looks up a localized string similar to Undefined function: {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_ParsingExpr">
+            <summary>
+              Looks up a localized string similar to Error parsing the expression: {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_QuoteMatch">
+            <summary>
+              Looks up a localized string similar to Missing matching &apos; character in expression: {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_SyntaxErr">
+            <summary>
+              Looks up a localized string similar to Unknown syntax in expression: {0}.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_SyntaxErr2">
+            <summary>
+              Looks up a localized string similar to Syntax error.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_Ternary">
+            <summary>
+              Looks up a localized string similar to Error in ternary operator.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_ThenCompleted">
+            <summary>
+              Looks up a localized string similar to Callback already completed.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.EXC_ThenRegistered">
+            <summary>
+              Looks up a localized string similar to Callback already registered.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.CommonMessages.Exc_TPDisposed">
+            <summary>
+              Looks up a localized string similar to The SmartThreadPool has been shutdown.
+            </summary>
+        </member>
+        <member name="T:Ion.Tools.IonVersion">
+            <summary>
+            Represents a Ion-style version.
+            Instances of this class are immutable.
+            
+            Supported formatting specifications:
+            
+            E: extended full version, like ToFriendlyString() - 101b4 (Build 5)
+            C: compact full version - 101b4d5
+            S: short version - 101b4
+            </summary>
+        </member>
+        <member name="F:Ion.Tools.IonVersion.Zero">
+            <summary>
+            Get the zero (null) version
+            </summary>
+        </member>
+        <member name="T:Ion.Tools.IonVersion.InvalidVersionException">
+            <summary>
+            Summary description for VersionInvalidException.
+            </summary>
+        </member>
+        <member name="T:Ion.Tools.IonVersion.ReleaseTypeEnum">
+            <summary>
+            Type of ION version release
+            </summary>
+        </member>
+        <member name="M:Ion.Tools.IonVersion.#ctor(System.Version)">
+             <summary>
+             Constructor with system version. <see cref="T:Ion.Tools.SystemVersionCodification"/>
+             </summary>
+             <remarks>
+             A system version is packed like this:
+             
+             OLD STYLE
+             2.3.0.102
+             
+             where:  2 is the Major version
+                     3 is Middle
+                     0 is Minor
+                     102 is b2 (100 for beta, 2 for stage)
+             
+             NEW STYLE (v1)
+             2.130.12350.102
+             
+             where:  2 is the Major version
+                     130 is Middle (3) and Minor version (0). 100 is to distinguish from older versions.
+                     102 is b2 (100 for beta, 2 for stage)
+                     12350 is the build number
+            
+             NEWER STYLE (v2)
+             2.230.102.12350
+             
+             where:  2 is the Major version
+                     230 is Middle (3) and Minor version (0). 200 is to distinguish from older versions.
+                     102 is b2 (100 for beta, 2 for stage)
+                     12350 is the build number
+             </remarks>
+             <param name="ver">The system version to convert</param>
+        </member>
+        <member name="M:Ion.Tools.IonVersion.ToString">
+            <summary>
+            Supported formatting specifications:
+            
+            E: extended full version, like ToFriendlyString() - 101b4 (Build 5)
+            C: compact full version - 101b4d5
+            S: short version - 101b4
+            </summary>
+        </member>
+        <member name="M:Ion.Tools.IonVersion.ToString(System.String,System.IFormatProvider)">
+            <summary>
+            Supported formatting specifications:
+            
+            E: extended full version, like ToFriendlyString() - 101b4 (Build 5)
+            C: compact full version - 101b4d5
+            S: short version - 101b4
+            </summary>
+        </member>
+        <member name="M:Ion.Tools.IonVersion.ToFriendlyString">
+            <summary>
+            Returns a user-friendly representation of the version, with the build number separated from
+            the signficant version. Examples: "100p1 (build 24)", "106 (build 20)"
+            </summary>
+            <remarks>CORESDK-2094</remarks>
+        </member>
+        <member name="M:Ion.Tools.IonVersion.GetSystemVersion(Ion.Tools.SystemVersionCodification)">
+            <summary>
+            Encode with new system
+            </summary>
+        </member>
+        <member name="M:Ion.Tools.IonVersion.ChangeBuildNumber(System.Int32)">
+            <summary>
+            Returns a new version with a different build number
+            </summary>
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.LibraryInfoFile1">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="F:Ion.Tools.Library.InfoFile.LibraryInfoFile1.XmlNamespaceName">
+            <summary>
+            The XML namespace of the .info file
+            </summary>
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.ProbingSection">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.LibrarySection">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.DependenciesSection">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.DependentLibrarySection">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.AssembliesSection">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.AssemblySection">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.BindingRedirect">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.AssemblyBindingRedirect">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:Ion.Tools.Library.InfoFile.LibraryBindingRedirect">
+            <summary>
+            For serialization use only
+            </summary>
+            <exclude />
+        </member>
+        <member name="P:Ion.Tools.Library.InfoFile.LibraryBindingRedirect.FromVersion">
+            <summary>
+            Get the starting version of the range, or null if no range specified
+            </summary>
+        </member>
+        <member name="P:Ion.Tools.Library.InfoFile.LibraryBindingRedirect.ToVersion">
+            <summary>
+            Get the last version of the range, or null if no range specified
+            </summary>
+        </member>
+        <member name="T:Ion.Tools.SystemVersionCodification">
+             <summary>
+             Enumerate the different ION version codification on 4-digit MS style.
+             </summary>
+             <remarks>
+             A system version is packed like this:
+             
+             OLD STYLE (Version0)
+             2.3.0.102
+             
+             where:  2 is the Major version
+                     3 is Middle
+                     0 is Minor
+                     102 is b2 (100 for beta, 2 for stage)
+             
+             NEW STYLE (Version1) (buggy)
+             2.130.12350.102
+             
+             where:  2 is the Major version
+                     130 is Middle (3) and Minor version (0). 100 is to distinguish from older versions.
+                     102 is b2 (100 for beta, 2 for stage)
+                     12350 is the build number
+            
+             NEW STYLE (Version2)
+             2.230.102.12350
+             
+             where:  2 is the Major version
+                     230 is Middle (3) and Minor version (0). 200 is to distinguish from older versions.
+                     102 is b2 (100 for beta, 2 for stage)
+                     12350 is the build number
+             </remarks>
+        </member>
+    </members>
+</doc>

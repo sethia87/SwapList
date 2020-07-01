@@ -1,0 +1,1379 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ion.Core.Toolkit.Foundation</name>
+    </assembly>
+    <members>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgBrush">
+            <summary>
+            Mimic a Windows brush
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgColor">
+            <summary>
+                Describes a color in terms of alpha, red, green, and blue channels.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgColor.A">
+            <summary>
+                Gets or sets the alpha value.
+            </summary>
+            <value> The alpha value. </value>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgColor.B">
+            <summary>
+                Gets or sets the blue value.
+            </summary>
+            <value> The blue value. </value>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgColor.G">
+            <summary>
+                Gets or sets the green value.
+            </summary>
+            <value> The green value. </value>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgColor.R">
+            <summary>
+                Gets or sets the red value.
+            </summary>
+            <value> The red value. </value>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.Parse(System.String)">
+            <summary>
+                Parse a string.
+            </summary>
+            <param name="value">
+                The string in the format "#FFFFFF00" or "255,200,180,50".
+            </param>
+            <returns>
+                The IonColor.
+            </returns>
+            <exception cref="T:System.FormatException">
+                Invalid format.
+            </exception>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ColorDifference(Ion.Core.Toolkit.Foundation.AgColor,Ion.Core.Toolkit.Foundation.AgColor)">
+            <summary>
+                Calculates the difference between two <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" />s
+            </summary>
+            <param name="c1">
+                The first color.
+            </param>
+            <param name="c2">
+                The second color.
+            </param>
+            <returns>
+                L2-norm in RGBA space
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.FromUInt32(System.UInt32)">
+            <summary>
+                Convert an <see cref="T:System.UInt32" /> to a <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" />.
+            </summary>
+            <param name="color">
+                The unsigned integer color value.
+            </param>
+            <returns>
+                The <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" />.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.FromHsv(System.Double[])">
+            <summary>
+                Creates a IonColor from the specified HSV array.
+            </summary>
+            <param name="hsv">
+                The HSV value array.
+            </param>
+            <returns>
+                A IonColor.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.FromHsv(System.Double,System.Double,System.Double)">
+            <summary>
+                Convert from HSV to <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" />
+                http://en.wikipedia.org/wiki/HSL_Color_space
+            </summary>
+            <param name="hue">
+                The hue value [0,1]
+            </param>
+            <param name="sat">
+                The saturation value [0,1]
+            </param>
+            <param name="val">
+                The intensity value [0,1]
+            </param>
+            <returns>
+                The <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" />.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.HueDifference(Ion.Core.Toolkit.Foundation.AgColor,Ion.Core.Toolkit.Foundation.AgColor)">
+            <summary>
+                Calculate the difference in hue between two <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" />s.
+            </summary>
+            <param name="c1">
+                The first color.
+            </param>
+            <param name="c2">
+                The second color.
+            </param>
+            <returns>
+                The hue difference.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.FromAColor(System.Byte,Ion.Core.Toolkit.Foundation.AgColor)">
+            <summary>
+                Creates a color defined by an alpha value and another color.
+            </summary>
+            <param name="a">
+                Alpha value.
+            </param>
+            <param name="color">
+                The original color.
+            </param>
+            <returns>
+                A color.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.FromArgb(System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+                Creates a color from the specified ARGB values.
+            </summary>
+            <param name="a">
+                The alpha value.
+            </param>
+            <param name="r">
+                The red value.
+            </param>
+            <param name="g">
+                The green value.
+            </param>
+            <param name="b">
+                The blue value.
+            </param>
+            <returns>
+                A color.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.FromRgb(System.Byte,System.Byte,System.Byte)">
+            <summary>
+                Creates a new <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" /> structure from the specified RGB values.
+            </summary>
+            <param name="r">
+                The red value.
+            </param>
+            <param name="g">
+                The green value.
+            </param>
+            <param name="b">
+                The blue value.
+            </param>
+            <returns>
+                A <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" /> structure with the specified values and an alpha channel value of 1.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.Interpolate(Ion.Core.Toolkit.Foundation.AgColor,Ion.Core.Toolkit.Foundation.AgColor,System.Double)">
+            <summary>
+                Interpolates the specified colors.
+            </summary>
+            <param name="color1">
+                The color1.
+            </param>
+            <param name="color2">
+                The color2.
+            </param>
+            <param name="t">
+                The t.
+            </param>
+            <returns>
+                The interpolated color
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ToByteString">
+            <summary>
+                Convert IonColor to double string.
+            </summary>
+            <returns>
+                A IonColor string, e.g. "255,200,180,50".
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.Equals(System.Object)">
+            <summary>
+                Determines whether the specified <see cref="T:System.Object" /> is equal to this instance.
+            </summary>
+            <param name="obj">
+                The <see cref="T:System.Object" /> to compare with this instance.
+            </param>
+            <returns>
+                <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c> .
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.Equals(Ion.Core.Toolkit.Foundation.AgColor)">
+            <summary>
+                Determines whether the specified <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" /> is equal to this instance.
+            </summary>
+            <param name="other">
+                The <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" /> to compare with this instance.
+            </param>
+            <returns>
+                <c>true</c> if the specified <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" /> is equal to this instance; otherwise, <c>false</c> .
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.GetColorName">
+            <summary>
+                Gets the color name.
+            </summary>
+            <returns>
+                The color name.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.GetHashCode">
+            <summary>
+                Returns a hash code for this instance.
+            </summary>
+            <returns>
+                A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ToString">
+            <summary>
+                Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+                A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ChangeAlpha(System.Byte)">
+            <summary>
+                Changes the opacity value.
+            </summary>
+            <param name="newAlpha">
+                The new alpha.
+            </param>
+            <returns>
+                The new color.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.Complementary">
+            <summary>
+                Calculates the complementary IonColor.
+            </summary>
+            <returns>
+                The complementary IonColor.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ToHsv">
+            <summary>
+                Converts from a <see cref="T:Ion.Core.Toolkit.Foundation.AgColor" /> to HSV values (double)
+            </summary>
+            <returns>
+                Array of [Hue,Saturation,Value] in the range [0,1]
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ChangeIntensity(System.Double)">
+            <summary>
+                Changes the intensity.
+            </summary>
+            <param name="factor">
+                The factor.
+            </param>
+            <returns>
+                The new IonColor.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ToUint">
+            <summary>
+                Converts to an unsigned integer.
+            </summary>
+            <returns>
+                The <see cref="T:System.UInt32" />.
+            </returns>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgColor.ToCode">
+            <summary>
+                Returns C# code that generates this instance.
+            </summary>
+            <returns>
+                The to code.
+            </returns>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgColors">
+            <summary> 
+            Implements a set of predefined colors.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.AliceBlue">
+            <summary>
+            The alice blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.AntiqueWhite">
+            <summary>
+            The antique white.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Aqua">
+            <summary>
+            The aqua.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Aquamarine">
+            <summary>
+            The aquamarine.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Azure">
+            <summary>
+            The azure.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Beige">
+            <summary>
+            The beige.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Bisque">
+            <summary>
+            The bisque.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Black">
+            <summary>
+            The black.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.BlanchedAlmond">
+            <summary>
+            The blanched almond.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Blue">
+            <summary>
+            The blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.BlueViolet">
+            <summary>
+            The blue violet.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Brown">
+            <summary>
+            The brown.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.BurlyWood">
+            <summary>
+            The burly wood.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.CadetBlue">
+            <summary>
+            The cadet blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Chartreuse">
+            <summary>
+            The chartreuse.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Chocolate">
+            <summary>
+            The chocolate.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Coral">
+            <summary>
+            The coral.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.CornflowerBlue">
+            <summary>
+            The cornflower blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Cornsilk">
+            <summary>
+            The cornsilk.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Crimson">
+            <summary>
+            The crimson.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Cyan">
+            <summary>
+            The cyan.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkBlue">
+            <summary>
+            The dark blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkCyan">
+            <summary>
+            The dark cyan.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkGoldenrod">
+            <summary>
+            The dark goldenrod.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkGray">
+            <summary>
+            The dark gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkGreen">
+            <summary>
+            The dark green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkKhaki">
+            <summary>
+            The dark khaki.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkMagenta">
+            <summary>
+            The dark magenta.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkOliveGreen">
+            <summary>
+            The dark olive green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkOrange">
+            <summary>
+            The dark orange.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkOrchid">
+            <summary>
+            The dark orchid.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkRed">
+            <summary>
+            The dark red.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkSalmon">
+            <summary>
+            The dark salmon.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkSeaGreen">
+            <summary>
+            The dark sea green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkSlateBlue">
+            <summary>
+            The dark slate blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkSlateGray">
+            <summary>
+            The dark slate gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkTurquoise">
+            <summary>
+            The dark turquoise.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DarkViolet">
+            <summary>
+            The dark violet.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DeepPink">
+            <summary>
+            The deep pink.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DeepSkyBlue">
+            <summary>
+            The deep sky blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DimGray">
+            <summary>
+            The dim gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.DodgerBlue">
+            <summary>
+            The dodger blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Firebrick">
+            <summary>
+            The firebrick.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.FloralWhite">
+            <summary>
+            The floral white.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.ForestGreen">
+            <summary>
+            The forest green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Fuchsia">
+            <summary>
+            The fuchsia.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Gainsboro">
+            <summary>
+            The gainsboro.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.GhostWhite">
+            <summary>
+            The ghost white.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Gold">
+            <summary>
+            The gold.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Goldenrod">
+            <summary>
+            The goldenrod.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Gray">
+            <summary>
+            The gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Green">
+            <summary>
+            The green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.GreenYellow">
+            <summary>
+            The green yellow.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Honeydew">
+            <summary>
+            The honeydew.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.HotPink">
+            <summary>
+            The hot pink.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.IndianRed">
+            <summary>
+            The indian red.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Indigo">
+            <summary>
+            The indigo.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Ivory">
+            <summary>
+            The ivory.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Khaki">
+            <summary>
+            The khaki.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Lavender">
+            <summary>
+            The lavender.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LavenderBlush">
+            <summary>
+            The lavender blush.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LawnGreen">
+            <summary>
+            The lawn green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LemonChiffon">
+            <summary>
+            The lemon chiffon.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightBlue">
+            <summary>
+            The light blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightCoral">
+            <summary>
+            The light coral.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightCyan">
+            <summary>
+            The light cyan.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightGoldenrodYellow">
+            <summary>
+            The light goldenrod yellow.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightGray">
+            <summary>
+            The light gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightGreen">
+            <summary>
+            The light green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightPink">
+            <summary>
+            The light pink.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightSalmon">
+            <summary>
+            The light salmon.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightSeaGreen">
+            <summary>
+            The light sea green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightSkyBlue">
+            <summary>
+            The light sky blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightSlateGray">
+            <summary>
+            The light slate gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightSteelBlue">
+            <summary>
+            The light steel blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LightYellow">
+            <summary>
+            The light yellow.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Lime">
+            <summary>
+            The lime.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.LimeGreen">
+            <summary>
+            The lime green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Linen">
+            <summary>
+            The linen.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Magenta">
+            <summary>
+            The magenta.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Maroon">
+            <summary>
+            The maroon.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumAquamarine">
+            <summary>
+            The medium aquamarine.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumBlue">
+            <summary>
+            The medium blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumOrchid">
+            <summary>
+            The medium orchid.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumPurple">
+            <summary>
+            The medium purple.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumSeaGreen">
+            <summary>
+            The medium sea green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumSlateBlue">
+            <summary>
+            The medium slate blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumSpringGreen">
+            <summary>
+            The medium spring green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumTurquoise">
+            <summary>
+            The medium turquoise.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MediumVioletRed">
+            <summary>
+            The medium violet red.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MidnightBlue">
+            <summary>
+            The midnight blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MintCream">
+            <summary>
+            The mint cream.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.MistyRose">
+            <summary>
+            The misty rose.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Moccasin">
+            <summary>
+            The moccasin.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.NavajoWhite">
+            <summary>
+            The navajo white.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Navy">
+            <summary>
+            The navy.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.OldLace">
+            <summary>
+            The old lace.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Olive">
+            <summary>
+            The olive.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.OliveDrab">
+            <summary>
+            The olive drab.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Orange">
+            <summary>
+            The orange.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.OrangeRed">
+            <summary>
+            The orange red.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Orchid">
+            <summary>
+            The orchid.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PaleGoldenrod">
+            <summary>
+            The pale goldenrod.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PaleGreen">
+            <summary>
+            The pale green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PaleTurquoise">
+            <summary>
+            The pale turquoise.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PaleVioletRed">
+            <summary>
+            The pale violet red.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PapayaWhip">
+            <summary>
+            The papaya whip.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PeachPuff">
+            <summary>
+            The peach puff.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Peru">
+            <summary>
+            The peru.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Pink">
+            <summary>
+            The pink.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Plum">
+            <summary>
+            The plum.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.PowderBlue">
+            <summary>
+            The powder blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Purple">
+            <summary>
+            The purple.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Red">
+            <summary>
+            The red.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.RosyBrown">
+            <summary>
+            The rosy brown.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.RoyalBlue">
+            <summary>
+            The royal blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SaddleBrown">
+            <summary>
+            The saddle brown.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Salmon">
+            <summary>
+            The salmon.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SandyBrown">
+            <summary>
+            The sandy brown.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SeaGreen">
+            <summary>
+            The sea green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SeaShell">
+            <summary>
+            The sea shell.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Sienna">
+            <summary>
+            The sienna.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Silver">
+            <summary>
+            The silver.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SkyBlue">
+            <summary>
+            The sky blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SlateBlue">
+            <summary>
+            The slate blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SlateGray">
+            <summary>
+            The slate gray.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Snow">
+            <summary>
+            The snow.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SpringGreen">
+            <summary>
+            The spring green.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.SteelBlue">
+            <summary>
+            The steel blue.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Tan">
+            <summary>
+            The tan.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Teal">
+            <summary>
+            The teal.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Thistle">
+            <summary>
+            The thistle.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Tomato">
+            <summary>
+            The tomato.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Transparent">
+            <summary>
+            The transparent.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Turquoise">
+            <summary>
+            The turquoise.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Violet">
+            <summary>
+            The violet.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Wheat">
+            <summary>
+            The wheat.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.White">
+            <summary>
+            The white.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.WhiteSmoke">
+            <summary>
+            The white smoke.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.Yellow">
+            <summary>
+            The yellow.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgColors.YellowGreen">
+            <summary>
+            The yellow green.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgDockablePlacement">
+            <summary> 
+            Describes the placement of a dockable item.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgDockablePlacement.Undocked">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgDockablePlacement.Left">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgDockablePlacement.Top">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgDockablePlacement.Right">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgDockablePlacement.Bottom">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgFont.FamilyName">
+            <summary>
+            The Font Family name
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgFont.Weight">
+            <summary>
+            The Opentype Font Weight
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.AgFont.Style">
+            <summary>
+            The font style (italic, regular, etc...)
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgFontWeight">
+            <summary>
+            Refers to the density of a typeface, in terms of the lightness or heaviness of the strokes.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgFontStyle">
+            <summary>
+            Defines a structure that represents the style of a font face as normal or italic.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgFontStyle.Normal">
+            <summary>
+            The characters in a normal, or roman, font are upright.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgFontStyle.Italic">
+            <summary>
+            The characters in an italic font are truly slanted and appear as they were designed.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgHorizontalAlignment">
+            <summary>
+            Specifies the horizontal alignment.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgHorizontalAlignment.Left">
+            <summary>
+            Aligned to the left.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgHorizontalAlignment.Center">
+            <summary>
+            Aligned in the center.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgHorizontalAlignment.Right">
+            <summary>
+            Aligned to the right.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgOrientation">
+            <summary>
+            Specifies the orientation of an item.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgOrientation.Horizontal">
+            <summary>
+            Orient the item horizontally. 
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgOrientation.Vertical">
+            <summary>
+            Orient the item vertically.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgTextAlignment">
+            <summary>
+            Specifies whether the text in the object is left-aligned, right-aligned, centered, or justified.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgTextAlignment.Center">
+            <summary>
+            Text is centered
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgTextAlignment.Left">
+            <summary>
+            Default. Text is aligned to the left.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgTextAlignment.Right">
+            <summary>
+            Text is aligned to the right.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgThickness">
+            <summary>
+            Describes the thickness of a frame around a rectangle. Four Double values describe the Left, Top, Right, and Bottom sides of the rectangle, respectively.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgThickness.#ctor(System.Double)">
+            <summary>
+            Initializes a new instance of the Thickness structure that has the specified uniform length on each side.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.AgThickness.#ctor(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the Thickness structure that has specific lengths (supplied as a Double) applied to each side of the rectangle.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.AgVerticalAlignment">
+            <summary>
+            Specifies the vertical alignment.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgVerticalAlignment.Top">
+            <summary>
+            Aligned at the top.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgVerticalAlignment.Middle">
+            <summary>
+            Aligned in the middle.
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.AgVerticalAlignment.Bottom">
+            <summary> 
+            Aligned at the bottom.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.CheckableMenuItemDescriptor.IsChecked">
+            <summary>
+            get/set the current status
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.MenuDescriptors.CheckableMenuItemDescriptor.Action">
+            <summary>
+            The action to be executed when the menu is activated.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuEntryPoint.Items">
+            <summary>
+            Get the collection of static children
+            </summary>
+        </member>
+        <member name="E:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuEntryPoint.Opening">
+            <summary>
+            Raised when the parent is going to be opened so the volatile children are required
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuEntryPointProvider">
+            <summary>
+            Each component (Table, Chart etc) which wants to support the agnostic Menu API
+            must expose this interface to the outside world ("clients" from now on).
+            Regardless of the actual menu structure of the component, clients can only ask for predefined
+            <see cref="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint"/>, identified by a string. These entry points must have been registered by the component itself
+            beforehand.
+            Each Entry Point returned by the <see cref="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuEntryPointProvider.CreateEntryPoint(System.String)"/> method is private to the caller. This means that a client can only see
+            its own menu structure. The infrastructure will take care of merging all the entry points instances related to the same name and produce a single coherent menu structure.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuEntryPointProvider.CreateEntryPoint(System.String)">
+            <summary>
+            Create a new entry point for the menu identified by the specified <paramref name="name"/>. 
+            </summary>
+            <param name="name">The name of the menu</param>
+            <returns>An instance of <see cref="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint"/>, if the specified menu exists. <c>null</c> otherwise.</returns>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuItemDescriptor.IsEnabled">
+            <summary>
+            Gets or sets whether this item is enabled.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuItemDescriptor.Caption">
+            <summary>
+            Get/Set the caption
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMenuItemDescriptor.Icon">
+            <summary>
+            Get/Set the image
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.IMergeableMenuItemDescriptor.MergeOrder">
+            <summary>
+            Get/Set the merge order
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint">
+            <summary>
+            entry point for a menu item - implementation
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint.Items">
+            <summary>
+            Get the collection of static children
+            </summary>
+        </member>
+        <member name="E:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint.Opening">
+            <summary>
+            Raised when the menu is going to be opened
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint.RaiseOpening">
+            <summary>
+            force the opening to be raised
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuDescriptor">
+            <summary>
+            represent an item that can have children
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuDescriptorProcessor`1">
+            <summary>
+            A helper class which concrete menu processors can use to recycle common merge/nest logic
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuEntryPointProvider">
+            <summary>
+            An helper class which can be used to standardize Entry Point management.
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuEntryPointProvider.RegisterMenu(System.String,Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuWithChildrenDescriptorBase)">
+            <summary>
+            Registers a Menu and associates it with the specified name
+            </summary>
+            <param name="name">The name used to identify the specified menu</param>
+            <param name="menu">The menu</param>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuEntryPointProvider.CreateEntryPoint(System.String)">
+            <summary>
+            Create a new entry point for the menu identified by the specified <paramref name="name"/>. 
+            </summary>
+            <param name="name">The name of the menu</param>
+            <returns>An instance of <see cref="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.Impl.MenuEntryPoint"/>, if the specified menu exists. <c>null</c> otherwise.</returns>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemCollection">
+            <summary>
+            represent a collection of items
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemCollection.Add(Ion.Core.Toolkit.Foundation.MenuDescriptors.IMergeableMenuItemDescriptor)">
+            <summary>
+            add an item
+            </summary>
+        </member>
+        <member name="F:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptor.Action">
+            <summary>
+            The action to be executed when the menu is activated.
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptorBase">
+            <summary>
+            A base class for MenuDescriptors which the user can interact with
+            </summary> 
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptorBase.ActionParameter">
+            <summary>
+            The (optional) parameter to be passed to the <see cref="F:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptor.Action"/> delegate.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptorBase.IsEnabled">
+            <summary>
+            Gets or sets whether this item is enabled.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptorBase.Caption">
+            <summary>
+            Get/Set the caption
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptorBase.Icon">
+            <summary>
+            Get/Set the image
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemDescriptorBase.MergeOrder">
+            <summary>
+            Get/Set the merge order
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemSeparatorDescriptor.MergeOrder">
+            <summary>
+            Get/Set the mergeorder
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemWithChildrenDescriptor">
+            <summary>
+            Represents an item that can have children
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemWithChildrenDescriptor.MergeOrder">
+            <summary>
+            Get/Set the mergeorder
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemWithChildrenDescriptor.Caption">
+            <summary>
+            Get/Set the caption
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemWithChildrenDescriptor.Icon">
+            <summary>
+            Get/Set the image
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemWithChildrenDescriptor.IsEnabled">
+            <summary>
+            True if this menu is enabled.
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuItemOpeningEventArgs.VolatileItems">
+            <summary>
+            get/set children that are shown only during the current opening
+            </summary>
+        </member>
+        <member name="T:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuWithChildrenDescriptorBase">
+            <summary>
+            represent an item that can have children
+            </summary>
+        </member>
+        <member name="M:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuWithChildrenDescriptorBase.CreateEntryPoint">
+            <summary>
+            create an entry point for the item
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuWithChildrenDescriptorBase.Items">
+            <summary>
+            the non-volatile sub-items
+            </summary>
+        </member>
+        <member name="P:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuWithChildrenDescriptorBase.EntryPoints">
+            <summary>
+            get entry points to merge items
+            </summary>
+        </member>
+        <member name="E:Ion.Core.Toolkit.Foundation.MenuDescriptors.MenuWithChildrenDescriptorBase.Opening">
+            <summary>
+            Raised when the menu is going to be opened - use this event to pass volatile items
+            </summary>
+        </member>
+    </members>
+</doc>
