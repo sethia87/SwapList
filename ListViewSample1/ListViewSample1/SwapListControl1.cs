@@ -7,30 +7,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Ion.Core.Toolkit.Command;
 
 namespace ListViewSample1
 {
     public class SwapListControl1 : Control
     {
         private Dictionary<string, string> MasterOrderTypeDict { get; set; }
+        private Dictionary<int, string> _indexedItem = new Dictionary<int, string>();
+        private Dictionary<int, string> _indexedSelectedShownItem = new Dictionary<int, string>();
         private Dictionary<int, string> _indexedOrderType = new Dictionary<int, string>();
         private Dictionary<int, string> _indexedSelectedShownOrderType = new Dictionary<int, string>();
         private readonly Dictionary<string, string> _initialValues = new Dictionary<string, string>();
         private readonly Dictionary<string, string> _changedValues = new Dictionary<string, string>();
-
-        public RelayCommand SelectedShownOrderTypesCommand { get; set; }
+        public RelayCommand<object> SelectedAvailableOrderTypesListCommand { get; set; }
+        public RelayCommand<object> SelectedShownOrderTypeListCommand { get; set; }
 
 
         public SwapListControl1()
         {
             MasterOrderTypeDict = new Dictionary<string, string>();
             ShownOrderTypeList = new ObservableCollection<string>();
-            SelectedShownOrderTypesCommand = new RelayCommand(Method);
+            SelectedAvailableOrderTypesListCommand = new RelayCommand<object>(GetSelectedAvailableItem);
+            SelectedShownOrderTypeListCommand = new RelayCommand<object>(GetSelectedShownItem);
         }
 
-        private void Method(object obj)
-        {
-        }
 
         public static readonly DependencyProperty AvailableOrderTypesListProperty = DependencyProperty.Register(
             "AvailableOrderTypesList", typeof(ObservableCollection<string>), typeof(SwapListControl1), null);
@@ -104,147 +105,162 @@ namespace ListViewSample1
             set { SetValue(SelectedShownOrderTypesProperty, value); }
         }
 
+
         #region Command Triggers
+        private void GetSelectedAvailableItem(object values)
+        {
+            _indexedItem.Clear();
+
+            var listOfValues = values as IList;
+            if (listOfValues != null)
+            {
+                foreach (string item in listOfValues)
+                {
+                    var index = AvailableOrderTypesList.IndexOf(item);
+                    _indexedItem.Add(index + 1, item);
+                }
+                _indexedItem = _indexedItem.OrderBy((ot) => ot.Key).Select((item) => item).ToDictionary(x => x.Key, x => x.Value);
+            }
+        }
+
+        private void GetSelectedShownItem(object values)
+        {
+            _indexedSelectedShownItem.Clear();
+
+            var listOfValues = values as IList;
+            if (listOfValues != null)
+            {
+                foreach (string item in listOfValues)
+                {
+                    var index = ShownOrderTypeList.IndexOf(item);
+                    _indexedSelectedShownItem.Add(index, item);
+                }
+                _indexedSelectedShownItem = _indexedSelectedShownItem.OrderBy((ot) => ot.Key).Select((item) => item).ToDictionary(x => x.Key, x => x.Value);
+            }
+        }
+
         public void MoveRightCommandTriggered()
         {
-            var tempList = new List<string>(_indexedOrderType.Values);
-            foreach (string selectedAvailableOrderType in tempList)
+            var tempList = new List<string>(_indexedItem.Values);
+            foreach (string selectedAvailableItem in tempList)
             {
-                ShownOrderTypeList.Add(selectedAvailableOrderType);
-                AvailableOrderTypesList.Remove(selectedAvailableOrderType);
+                ShownOrderTypeList.Add(selectedAvailableItem);
+                AvailableOrderTypesList.Remove(selectedAvailableItem);
             }
-            //ClearSelection();
-            //MarkSelectedOrderTypes(tempList);
         }
 
         public void MoveLeftCommandTriggered()
         {
-            if (_indexedSelectedShownOrderType.Values.Contains("Algorithms"))
+            if (_indexedSelectedShownItem.Values.Contains("Algorithms"))
                 return;
-            var tempList = new List<string>(_indexedSelectedShownOrderType.Values);
-            foreach (string selectedAvailableOrderType in tempList)
+            var tempList = new List<string>(_indexedSelectedShownItem.Values);
+            foreach (string selectedAvailableItem in tempList)
             {
-                if (!AvailableOrderTypesList.Contains(selectedAvailableOrderType))
-                    AvailableOrderTypesList.Add(selectedAvailableOrderType);
-                if (ShownOrderTypeList.Contains(selectedAvailableOrderType))
-                    ShownOrderTypeList.Remove(selectedAvailableOrderType);
+                if (!AvailableOrderTypesList.Contains(selectedAvailableItem))
+                    AvailableOrderTypesList.Add(selectedAvailableItem);
+                if (ShownOrderTypeList.Contains(selectedAvailableItem))
+                    ShownOrderTypeList.Remove(selectedAvailableItem);
 
             }
-            //ClearSelection();
-            //MarkSelectedAvlOrderTypes(tempList);
         }
 
         public void MoveAllUpCommandTriggered()
         {
-            if (SelectedShownOrderTypes.Count > 0)
+            //if (SelectedShownOrderTypes.Count > 0)
             {
-                var diffOfOrderType = new List<string>(ShownOrderTypeList.Except(_indexedSelectedShownOrderType.Values));
-                var selectedAvlOrderTypes = new List<string>(_indexedSelectedShownOrderType.Values);
+                var diffOfShownSelectedList = new List<string>(ShownOrderTypeList.Except(_indexedSelectedShownItem.Values));
+                var selectedAvlList = new List<string>(_indexedSelectedShownItem.Values);
                 ShownOrderTypeList.Clear();
-                foreach (var orderType in selectedAvlOrderTypes.Union(diffOfOrderType))
+                foreach (var item in selectedAvlList.Union(diffOfShownSelectedList))
                 {
-                    ShownOrderTypeList.Add(orderType);
+                    ShownOrderTypeList.Add(item);
                 }
-                //MarkSelectedOrderTypes(selectedAvlOrderTypes);
             }
         }
 
         public void MoveAllDownCommandTriggered()
         {
-            if (SelectedShownOrderTypes.Count > 0)
+            //if (SelectedShownOrderTypes.Count > 0)
             {
-                var diffOfOrderType = new List<string>(ShownOrderTypeList.Except(_indexedSelectedShownOrderType.Values));
-                var selectedAvlOrderTypes = new List<string>(_indexedSelectedShownOrderType.Values);
+                var diffOfShownSelectedList = new List<string>(ShownOrderTypeList.Except(_indexedSelectedShownItem.Values));
+                var selectedAvlList = new List<string>(_indexedSelectedShownItem.Values);
                 ShownOrderTypeList.Clear();
-                diffOfOrderType.AddRange(selectedAvlOrderTypes);
-                foreach (var orderType in diffOfOrderType)
+                diffOfShownSelectedList.AddRange(selectedAvlList);
+                foreach (var item in diffOfShownSelectedList)
                 {
-                    ShownOrderTypeList.Add(orderType);
+                    ShownOrderTypeList.Add(item);
                 }
-                // MarkSelectedOrderTypes(selectedAvlOrderTypes);
             }
         }
 
         public void MoveUpCommandTriggered()
         {
-            if (SelectedShownOrderTypes.Count > 0)
+            //if (SelectedShownOrderTypes.Count > 0)
             {
-                var selectedAvlOrderTypes = new List<string>(_indexedSelectedShownOrderType.Values);
+                var selectedAvlList = new List<string>(_indexedSelectedShownItem.Values);
 
-                int indexOfFirstItem = _indexedSelectedShownOrderType.FirstOrDefault().Key;
+                int indexOfFirstItem = _indexedSelectedShownItem.FirstOrDefault().Key;
                 int newIndexOfFirstItem = indexOfFirstItem - 1;
 
                 if (newIndexOfFirstItem == -1)
                 {
                     newIndexOfFirstItem = 0;
-                    foreach (var orderType in selectedAvlOrderTypes)
+                    foreach (var item in selectedAvlList)
                     {
-                        ShownOrderTypeList.Remove(orderType);
-                        ShownOrderTypeList.Insert(newIndexOfFirstItem, orderType);
+                        ShownOrderTypeList.Remove(item);
+                        ShownOrderTypeList.Insert(newIndexOfFirstItem, item);
                         newIndexOfFirstItem++;
                     }
                 }
                 else
                 {
-                    foreach (var orderType in selectedAvlOrderTypes)
+                    foreach (var item in selectedAvlList)
                     {
                         if (newIndexOfFirstItem >= 0)
                         {
-                            ShownOrderTypeList.Remove(orderType);
-                            ShownOrderTypeList.Insert(newIndexOfFirstItem, orderType);
+                            ShownOrderTypeList.Remove(item);
+                            ShownOrderTypeList.Insert(newIndexOfFirstItem, item);
                         }
                         newIndexOfFirstItem++;
                     }
                 }
-                //MarkSelectedOrderTypes(selectedAvlOrderTypes);
             }
         }
 
         public void MoveDownCommandTriggered()
         {
-            if (SelectedShownOrderTypes.Count > 0)
+            // if (SelectedShownOrderTypes.Count > 0)
             {
-                var selectedAvlOrderTypes = new List<string>(_indexedSelectedShownOrderType.Values);
-                int indexOfLastItem = _indexedSelectedShownOrderType.LastOrDefault().Key;
+                var selectedAvlList = new List<string>(_indexedSelectedShownItem.Values);
+                int indexOfLastItem = _indexedSelectedShownItem.LastOrDefault().Key;
                 int newIndexOfLastItem = (indexOfLastItem < ShownOrderTypeList.Count - 1) ? indexOfLastItem + 1 : indexOfLastItem;
 
                 if (newIndexOfLastItem == ShownOrderTypeList.Count - 1)
                 {
-                    foreach (var orderType in selectedAvlOrderTypes)
+                    foreach (var item in selectedAvlList)
                     {
-                        ShownOrderTypeList.Remove(orderType);
-                        ShownOrderTypeList.Add(orderType);
+                        ShownOrderTypeList.Remove(item);
+                        ShownOrderTypeList.Add(item);
                     }
                 }
                 else
                 {
-                    string orderTypeInsertionValue = ShownOrderTypeList[newIndexOfLastItem];
-                    foreach (var orderType in selectedAvlOrderTypes)
+                    string itemInsertionValue = ShownOrderTypeList[newIndexOfLastItem];
+                    foreach (var item in selectedAvlList)
                     {
-                        ShownOrderTypeList.Remove(orderType);
+                        ShownOrderTypeList.Remove(item);
                     }
-                    int lastShownItemIndex = ShownOrderTypeList.IndexOf(orderTypeInsertionValue) + 1;
-                    foreach (var orderType in selectedAvlOrderTypes)
+                    int lastShownItemIndex = ShownOrderTypeList.IndexOf(itemInsertionValue) + 1;
+                    foreach (var item in selectedAvlList)
                     {
-                        ShownOrderTypeList.Insert(lastShownItemIndex, orderType);
+                        ShownOrderTypeList.Insert(lastShownItemIndex, item);
 
                         if (lastShownItemIndex < 4)
                             lastShownItemIndex++;
                     }
                 }
-                //MarkSelectedOrderTypes(selectedAvlOrderTypes);
             }
         }
-
-        //private void GotFocusShownOrderTypeTriggered()
-        //{
-        //    SelectedAvlOrderTypes.Clear();
-        //}
-
-        //private void GotFocusAvailableOrderTypeTriggered()
-        //{
-        //    SelectedOrderTypes.Clear();
-        //}
         #endregion
 
     }

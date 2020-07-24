@@ -4,9 +4,15 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:ionCtk="http://schemas.iontrading.com/coreToolkit"
+        xmlns:converter="clr-namespace:ListViewSample1"
         xmlns:listViewSample1="clr-namespace:ListViewSample1"
+        xmlns:myNamespace="clr-namespace:ListViewSample1"
+
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
+        <converter:IndexToBoolConverter x:Key="IndexToBoolConverter"></converter:IndexToBoolConverter>
+        <converter:IndexAndItemsToBoolConverter x:Key="IndexAndItemsToBoolConverter"></converter:IndexAndItemsToBoolConverter>
+
         <ControlTemplate x:Key="SwapListControlTemplate">
             <Border BorderBrush="SkyBlue" BorderThickness="1">
                 <Grid>
@@ -20,20 +26,17 @@
                         <TextBlock Margin="5,0,5,0" DockPanel.Dock="Top" Text="Order Types"></TextBlock>
                         <ListView  Width="150"  IsSynchronizedWithCurrentItem="True"  x:Name="MyListView" Margin="5" ItemsSource="{Binding Path=AvailableOrderTypesList, RelativeSource={RelativeSource TemplatedParent}}">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <ei:ChangePropertyAction  PropertyName="SelectedAvailableOrderTypes" Value="{Binding Path=SelectedItems, ElementName=MyListView}" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                    <ei:ChangePropertyAction  PropertyName="SelectedAvailableOrderTypes" Value="{Binding Path=SelectedItem, ElementName=MyListView}" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <i:InvokeCommandAction  Command="{Binding Path=SelectedAvailableOrderTypesListCommand,RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=AvailableListView, Path=SelectedItems}"/>
                                 </i:EventTrigger>
-                                <!--<i:EventTrigger EventName="GotFocus">
-                            <i:InvokeCommandAction Command="{Binding GotFocusAvailableOrderTypeTriggered}" ></i:InvokeCommandAction>
-                    </i:EventTrigger>-->
-
                             </i:Interaction.Triggers>
                         </ListView>
                     </DockPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Vertical">
 
-                        <Button ToolTip="Move Right" Height="23" Margin="5,70,5,5">
+                        <Button ToolTip="Move Right" Height="23" Margin="5,70,5,5" IsEnabled="{Binding Items.Count,ElementName=MyListView}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <ei:CallMethodAction MethodName="MoveRightCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
@@ -57,7 +60,7 @@
                             </StackPanel>
                         </Button>
 
-                        <Button ToolTip="Move Top" Height="23"  Margin="5">
+                        <Button ToolTip="Move Top" Height="23"  Margin="5" IsEnabled="{Binding ElementName=SelectedListView,Path=SelectedIndex,Converter={StaticResource IndexToBoolConverter} }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <ei:CallMethodAction MethodName="MoveAllUpCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
@@ -70,6 +73,25 @@
                         </Button>
 
                         <Button ToolTip="Move Bottom" Height="23"  Margin="5" >
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Value ="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource IndexAndItemsToBoolConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding ElementName="SelectedListView" Path="Items"></Binding>
+                                                        <Binding ElementName="SelectedListView" Path="SelectedIndex"></Binding>
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <DataTrigger.Setters>
+                                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                            </DataTrigger.Setters>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <ei:CallMethodAction MethodName="MoveAllDownCommandTriggered" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
@@ -111,16 +133,9 @@
                         <TextBlock Margin="5,0,5,0" DockPanel.Dock="Top" Text="Selected Order Types"></TextBlock>
                         <ListView Width="150"  IsSynchronizedWithCurrentItem="True"   x:Name="SelectedListView"  Margin="5"   ItemsSource="{Binding Path=ShownOrderTypeList, RelativeSource={RelativeSource TemplatedParent}}">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction  Command="{Binding Path=SelectedShownOrderTypesCommand,RelativeSource={RelativeSource TemplatedParent}}"
-                                                            CommandParameter="{Binding ElementName=SelectedListView, Path=SelectedItems}"/>
-
-                                    <!--<ei:ChangePropertyAction PropertyName="SelectedShownOrderTypes" Value="{Binding Path=SelectedItems, ElementName=SelectedListView}" TargetObject="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>-->
+                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                    <i:InvokeCommandAction  Command="{Binding Path=SelectedShownOrderTypeListCommand,RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=SelectedListView, Path=SelectedItems}"/>
                                 </i:EventTrigger>
-
-                                <!--<i:EventTrigger EventName="GotFocus">
-                            <i:InvokeCommandAction Command="{Binding GotFocusShownOrderTypeCommand}" ></i:InvokeCommandAction>
-                    </i:EventTrigger>-->
                             </i:Interaction.Triggers>
                         </ListView>
                     </DockPanel>
@@ -129,7 +144,7 @@
             </Border>
         </ControlTemplate>
     </Window.Resources>
-    
+
     <Grid>
         <listViewSample1:SwapListControl1  Template="{StaticResource SwapListControlTemplate}" ShownOrderTypeList="{Binding ShownOrderTypeList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                            Margin="20,15,0,0" AvailableOrderTypesList="{Binding AvailableOrderTypesList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></listViewSample1:SwapListControl1>
